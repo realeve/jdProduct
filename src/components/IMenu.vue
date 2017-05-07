@@ -8,7 +8,7 @@
               <Icon :type="item.icon"></Icon>
               {{item.title}}
             </template>
-            <Menu-item v-for="subMenu in item.subMenu" :name="item.name+'/'+subMenu.name">{{subMenu.title}}</Menu-item>
+            <Menu-item v-for="subMenu in item.subMenu" :name="item.name+'/'+subMenu.name" :key="item.name+'/'+subMenu.name">{{subMenu.title}}</Menu-item>
           </Submenu>
           <Menu-item v-else :name="item.name">
             <Icon type="settings"></Icon>
@@ -89,7 +89,7 @@
             this.bread = {
               path: '/input',
               name: '数据录入',
-              path2: '/input/short',
+              path2: path,
               name2: '短线产品'
             }
             break;
@@ -97,7 +97,7 @@
             this.bread = {
               path: '/input',
               name: '数据录入',
-              path2: '/input/long',
+              path2: path,
               name2: '长线产品'
             }
             break;
@@ -105,7 +105,7 @@
             this.bread = {
               path: '/stat',
               name: '统计分析',
-              path2: '/stat/short',
+              path2: path,
               name2: '短线产品'
             }
             break;
@@ -113,13 +113,13 @@
             this.bread = {
               path: '/stat',
               name: '统计分析',
-              path2: '/stat/long',
+              path2: path,
               name2: '长线产品'
             }
             break;
           case '/setting':
             this.bread = {
-              path: '/setting',
+              path,
               name: '综合设置',
               path2: '',
               name2: ''
@@ -133,8 +133,7 @@
 </script>
 
 <style scoped lang="less">
- 
-   .layout-breadcrumb {
+  .layout-breadcrumb {
     padding: 10px 15px 0;
   }
 
