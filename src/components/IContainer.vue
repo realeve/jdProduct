@@ -5,7 +5,7 @@
 </template>
 <style scoped>
   .layout-content {
-    min-height: 1200px;
+    min-height: 300px;
     margin: 15px;
     overflow: hidden;
     background: #fff;

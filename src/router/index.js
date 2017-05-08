@@ -12,19 +12,19 @@ export default new Router({
         component: Input
     }, {
         path: '/input/short',
-        name: 'Input',
+        name: 'InputShort',
         component: Input
     }, {
         path: '/input/long',
-        name: 'Input',
+        name: 'InputLong',
         component: Input
     }, {
         path: '/stat/short',
-        name: 'Stat',
+        name: 'StatShort',
         component: Stat
     }, {
         path: '/stat/long',
-        name: 'Stat',
+        name: 'StatLong',
         component: Stat
     }]
 })
