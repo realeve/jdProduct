@@ -27,7 +27,7 @@
   </div>
 </template>
 <script>
-  import IAffix from '@/components/IAffix';
+  import IAffix from '@/components/UI/IAffix';
 
   export default {
     components: {

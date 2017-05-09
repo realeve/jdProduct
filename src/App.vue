@@ -7,15 +7,13 @@
   </div>
 </template>
 <script>
-  import IAffix from '@/components/IAffix';
-  import ISlogan from '@/components/ISlogan';
-  import IMenu from '@/components/IMenu';
-  import IContainer from '@/components/IContainer';
-  import IFooter from '@/components/IFooter';
+  import ISlogan from '@/components/UI/ISlogan';
+  import IMenu from '@/components/UI/IMenu';
+  import IContainer from '@/components/UI/IContainer';
+  import IFooter from '@/components/UI/IFooter';
 
   export default {
     components: {
-      IAffix,
       ISlogan,
       IMenu,
       IContainer,
