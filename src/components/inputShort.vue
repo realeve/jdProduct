@@ -4,9 +4,6 @@
       <p slot="title">生产信息</p>
       <Row>
         <Col span="11">
-        <Form-item label="流水号" prop="print_sn">
-          <Input v-model="formItem.print_sn" placeholder="请输入印刷部流水号"></Input>
-        </Form-item>
         <Form-item label="生产流程" prop="process">
           <Select v-model="formItem.process" placeholder="请选择生产流程">
               <Option v-for="item in processList" :value="item.value" :key="item">{{item.name}}</Option>
@@ -16,6 +13,9 @@
           <Select v-model="formItem.process_detail" placeholder="请选择工序">
               <Option v-for="(item,i) in processDetailList" :value="item.value" :key="item">{{item.name}}</Option>
           </Select>
+        </Form-item>
+        <Form-item label="流水号" prop="print_sn">
+          <Input v-model="formItem.print_sn" placeholder="请输入印刷部流水号"></Input>
         </Form-item>
         <Form-item v-if="showTimes" label="次数" prop="times">
           <Input v-model="formItem.times" :placeholder="placeholder">{{formItem.placeholder}}</Input>
@@ -33,6 +33,9 @@
         </Form-item>
         <Form-item label="数量" prop="proc_num">
           <Input v-model="formItem.proc_num" placeholder="请输入生产数量"></Input>
+        </Form-item>
+        <Form-item label="工时" prop="proc_working_hours">
+          <Input v-model="formItem.proc_working_hours" placeholder="请输入工时"></Input>
         </Form-item>
         <Form-item>
           <Button type="primary" @click="handleSubmit('formItem')">提交</Button>
@@ -75,7 +78,8 @@
           proc_num: '',
           process_detail: '',
           times: '',
-          spec: ''
+          spec: '',
+          proc_working_hours: ''
         },
         ruleValidate: {
           print_sn: [{
@@ -86,6 +90,16 @@
           proc_num: [{
             required: true,
             message: '请录入数量',
+            trigger: 'blur'
+          }],
+          proc_working_hours: [{
+            required: true,
+            message: '请录入工时',
+            trigger: 'blur'
+          }],
+          spec: [{
+            required: true,
+            message: '请录入规格',
             trigger: 'blur'
           }]
         }
