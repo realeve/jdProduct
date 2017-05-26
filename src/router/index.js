@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Input from '@/components/Input'
+import Base from '@/components/Base'
 import Stat from '@/components/Stat'
 
 Vue.use(Router)
@@ -18,6 +19,14 @@ export default new Router({
         path: '/input/long',
         name: 'InputLong',
         component: Input
+    }, {
+        path: '/base/short',
+        name: 'BaseShort',
+        component: Base
+    }, {
+        path: '/base/long',
+        name: 'BaseLong',
+        component: Base
     }, {
         path: '/stat/short',
         name: 'StatShort',

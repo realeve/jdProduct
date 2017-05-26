@@ -2,9 +2,7 @@
   <div class="warper first-page">
     <div class="content">
       <div class="slogan">
-        <h1>什么值得卖</h1>
-        <h3>国内贵金属电商销售市场分析报告</h3>
-        <h3>XX有限公司</h3>
+        <h1>金鼎生产数据系统</h1>
       </div>
     </div>
   </div>

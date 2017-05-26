@@ -36,6 +36,18 @@
     data() {
       return {
         menuList: [{
+          title: '基础数据',
+          name: '/base',
+          icon: 'settings',
+          hasSubMenu: true,
+          subMenu: [{
+            title: '短线产品',
+            name: 'short'
+          }, {
+            title: '长线产品',
+            name: 'long'
+          }]
+        },{
           title: '数据录入',
           name: '/input',
           icon: 'ios-grid-view',
@@ -59,7 +71,7 @@
             title: '长线产品',
             name: 'long'
           }]
-        }, {
+        },{
           hasSubMenu: false,
           name: '/setting',
           icon: 'settings',
@@ -85,6 +97,22 @@
       getMenu(path) {
         this.$router.push(path);
         switch (path) {
+          case '/base/short':
+            this.bread = {
+              path: '/input',
+              name: '基础数据',
+              path2: path,
+              name2: '短线产品'
+            }
+            break;
+          case '/base/long':
+            this.bread = {
+              path: '/input',
+              name: '基础数据',
+              path2: path,
+              name2: '长线产品'
+            }
+            break;
           case '/input/short':
             this.bread = {
               path: '/input',

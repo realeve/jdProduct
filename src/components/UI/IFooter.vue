@@ -18,7 +18,7 @@
   export default {
     data() {
       return {
-        title: '金鼎生产数据录入系统'
+        title: '金鼎生产数据系统'
       }
     }
   }
