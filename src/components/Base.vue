@@ -5,7 +5,7 @@
       <Row>
         <Col span="11">
         <Form-item label="产品类别" prop="prod_type_id">
-          <Select v-model="formItem.prod_type" placeholder="请选择产品类别">
+          <Select v-model="formItem.prod_type_id" placeholder="请选择产品类别">
               <Option v-for="(item,i) in prodType" :value="i" :key="item">{{item}}</Option>
           </Select>
         </Form-item>
@@ -28,7 +28,7 @@
           <Input v-model="formItem.order_num" placeholder="请输入订单数量"></Input>
         </Form-item>
         <Form-item label="订单单位" prop="prod_unit_id">
-          <Select v-model="formItem.prod_unit" placeholder="请选择计量单位">
+          <Select v-model="formItem.prod_unit_id" placeholder="请选择计量单位">
               <Option v-for="(item,i) in prodUnit" :value="i" :key="item">{{item}}</Option>
           </Select>
         </Form-item>
@@ -37,7 +37,7 @@
         </Form-item>
         <Form-item label="投纸数（全张）" prop="order_paper_num">
           <Input v-model="formItem.order_paper_num" placeholder="请输入订单全张投纸数"></Input>
-        </Form-item>  
+        </Form-item>
         <Form-item>
           <Button type="primary" @click="handleSubmit('formItem')">提交</Button>
           <Button type="ghost" style="margin-left: 8px" @click="handleReset('formItem')">重置</Button>
@@ -51,8 +51,12 @@
   .margin-top-20 {
     margin-top: 20px;
   }
+
 </style>
 <script>
+  import setting from '../config/setting';
+  import util from '../config/util';
+
   let prodType = ["证照证书产品", "有价产品", "一般印刷品", "药盒产品", "卷标产品", "全凹产品", "胶凹丝产品", "过版纸", "全外协产品", "打样产品", "分数产品"],
     prodUnit = ["个", "套", "枚", "中本", "本", "大张", "中张", "小张"];
 
@@ -132,19 +136,43 @@
       }
     },
     methods: {
+      getParams() {
+        let params = {
+          tbl: 0,
+          tblname: 'base_short',
+          utf2gbk: ['prod_name'],
+          rec_time: util.getNow()
+        }
+        return Object.assign(params, this.formItem);
+      },
       handleSubmit(name) {
-        console.log(this.formItem);
+        let passed = true;
         this.$refs[name].validate(valid => {
-          if (valid) {
-            this.$Message.success('提交成功!');
-          } else {
+          if (!valid) {
             this.$Message.error('表单验证失败!');
+            passed = false;
           }
         });
+        if (!passed) {
+          return;
+        }
+        let params = this.getParams();
+        this.$http.post(setting.api.insert, params, {
+          emulateJSON: true
+        }).then(res => {
+          console.log(res);
+          this.$Message.success('数据提交成功!');
+        }).catch(e => {
+          console.log(e);
+          this.$Message.error('数据提交失败!');
+        })
       },
       handleReset(name) {
         this.$refs[name].resetFields();
       }
+    },
+    mounted() {
+      console.log(setting);
     }
   }
 

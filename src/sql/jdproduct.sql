@@ -11,7 +11,7 @@ Target Server Type    : SQL Server
 Target Server Version : 105000
 File Encoding         : 65001
 
-Date: 2017-05-26 15:32:27
+Date: 2017-05-31 00:09:40
 */
 
 
@@ -30,7 +30,8 @@ CREATE TABLE [dbo].[base_short] (
 [order_num] int NULL ,
 [prod_unit_id] int NULL ,
 [prod_spec] int NULL ,
-[order_paper_num] int NULL 
+[order_paper_num] int NULL ,
+[rec_time] datetime NULL 
 )
 
 
