@@ -136,6 +136,31 @@
       }
     },
     methods: {
+      save2local() {
+        let formItem={
+          order_id: '',
+          prod_sn: '',
+          print_sn: '',
+          prod_name: '',          
+          prod_type_id: '',
+        };
+        Object.keys(formItem).forEach(item => {
+          formItem[item] = this.formItem[item];
+        })
+
+        let str = JSON.stringify(formItem);
+        localStorage.setItem('baseShort', str);
+      },
+      loadFromLocal() {
+        let str = localStorage.getItem('baseShort');
+        if (typeof str == 'undefined') {
+          return;
+        }
+        let obj = JSON.parse(str);
+        Object.keys(obj).forEach(item => {
+          this.formItem[item] = obj[item];
+        })
+      },
       getParams() {
         let params = {
           tbl: 0,
@@ -156,6 +181,9 @@
         if (!passed) {
           return;
         }
+
+        this.save2local();
+
         let params = this.getParams();
         this.$http.post(setting.api.insert, params, {
           emulateJSON: true
@@ -173,6 +201,7 @@
     },
     mounted() {
       // console.log(setting);
+      this.loadFromLocal();
     }
   }
 

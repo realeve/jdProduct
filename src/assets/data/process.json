@@ -1,6 +1,7 @@
 [{
         "name": "初期库存",
         "value": 0,
+        "times":false,
         "detail": [{
             "name": "成品",
             "value": 0

@@ -172,7 +172,7 @@
       }
     },
     mounted() {
-      // console.log(setting);
+      console.log(setting);
     }
   }
 
