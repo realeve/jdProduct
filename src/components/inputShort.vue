@@ -14,11 +14,23 @@
               <Option v-for="(item,i) in processDetailList" :value="item.value" :key="item">{{item.name}}</Option>
           </Select>
         </Form-item>
-        <Form-item label="流水号" prop="print_sn">
-          <Input v-model="formItem.print_sn" placeholder="请输入印刷部流水号"></Input>
+        <Form-item label="设备">
+          <Input placeholder="下拉选择设备名称(数据保留)"></Input>
         </Form-item>
-        <Form-item v-if="showTimes" label="次数" prop="times">
+        <Form-item label="机长">
+          <Input placeholder="下拉选择机长"></Input>
+        </Form-item>
+        <Form-item label="流水号" prop="print_sn">
+          <Input v-model="formItem.print_sn" placeholder="请输入印刷部流水号(数据保留)"></Input>
+        </Form-item>
+        <Form-item label="产品名称">
+          <Input placeholder="下拉选择产品名称"></Input>
+        </Form-item>
+        <!--Form-item v-if="showTimes" label="次数" prop="times">
           <Input v-model="formItem.times" :placeholder="placeholder">{{formItem.placeholder}}</Input>
+        </Form-item-->
+        <Form-item label="备注">
+          <Input placeholder="请输入备注信息"></Input>
         </Form-item>
         </Col>
 

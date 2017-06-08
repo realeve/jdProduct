@@ -23,16 +23,16 @@
           <Input v-model="formItem.spec" placeholder="请输入规格"></Input>
         </Form-item>
         <Form-item label="昨日库存" prop="inventory">
-          <Input v-model="formItem.inventory" placeholder="请输入昨日库存"></Input>
+          <Input v-model="formItem.inventory" placeholder="请输入昨日库存(无需人工录入)"></Input>
         </Form-item>
         </Col>
 
         <Col span="11" offset="2">
-        <Form-item label="收入" prop="income">
-          <Input v-model="formItem.income" placeholder="请输入收入数"></Input>
+        <Form-item label="投纸数" prop="income">
+          <Input v-model="formItem.income" placeholder="请输入投纸数"></Input>
         </Form-item>
-        <Form-item label="生产" prop="produce_num">
-          <Input v-model="formItem.produce_num" placeholder="请输入生产数量"></Input>
+        <Form-item label="上机数" prop="produce_num">
+          <Input v-model="formItem.produce_num" placeholder="请输入上机数"></Input>
         </Form-item>
         <Form-item label="工时" prop="produce_hours">
           <Input v-model="formItem.produce_hours" placeholder="请输入生产工时"></Input>

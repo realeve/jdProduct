@@ -32,8 +32,8 @@
               <Option v-for="(item,i) in prodUnit" :value="i" :key="item">{{item}}</Option>
           </Select>
         </Form-item>
-        <Form-item label="订单规格(K)" prop="prod_spec">
-          <Input v-model="formItem.prod_spec" placeholder="请输入订单规格(1-50)"></Input>
+        <Form-item label="成品规格(K)" prop="prod_spec">
+          <Input v-model="formItem.prod_spec" placeholder="请输入成品规格"></Input>
         </Form-item>
         <Form-item label="投纸数（全张）" prop="order_paper_num">
           <Input v-model="formItem.order_paper_num" placeholder="请输入订单全张投纸数"></Input>
@@ -137,12 +137,12 @@
     },
     methods: {
       save2local() {
-        let formItem={
+        let formItem={      
+          prod_type_id: '',
           order_id: '',
           prod_sn: '',
           print_sn: '',
-          prod_name: '',          
-          prod_type_id: '',
+          prod_name: '',    
         };
         Object.keys(formItem).forEach(item => {
           formItem[item] = this.formItem[item];
