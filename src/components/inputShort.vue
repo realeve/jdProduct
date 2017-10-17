@@ -4,33 +4,34 @@
       <p slot="title">生产信息</p>
       <Row>
         <Col span="11">
-        <Form-item label="生产流程" prop="process_id">
+        <Form-item label="生产流程">
           <Select v-model="formItem.process_id" placeholder="请选择生产流程">
               <Option v-for="item in processList" :value="item.value" :key="item">{{item.name}}</Option>
           </Select>
         </Form-item>
-        <Form-item label="工序" prop="process_detail_id">
+        <Form-item label="工序">
           <Select v-model="formItem.process_detail_id" placeholder="请选择工序">
               <Option v-for="(item,i) in processDetailList" :value="item.value" :key="item">{{item.name}}</Option>
           </Select>
         </Form-item>
         <Form-item label="设备">
-          <Input placeholder="下拉选择设备名称(数据保留)"></Input>
+          <Input placeholder="请输入设备名称" v-model="formItem.machine"></Input>
         </Form-item>
         <Form-item label="机长">
-          <Input placeholder="下拉选择机长"></Input>
+          <Input placeholder="请输入机长信息" v-model="formItem.captain"></Input>
         </Form-item>
         <Form-item label="流水号" prop="print_sn">
           <Input v-model="formItem.print_sn" placeholder="请输入印刷部流水号(数据保留)"></Input>
         </Form-item>
         <Form-item label="产品名称">
-          <Input placeholder="下拉选择产品名称"></Input>
+          <label for="">{{prod_name}}</label>
+          <!-- <Input v-model="prod_name" disabled></Input> -->
         </Form-item>
         <!--Form-item v-if="showTimes" label="次数" prop="times">
           <Input v-model="formItem.times" :placeholder="placeholder">{{formItem.placeholder}}</Input>
         </Form-item-->
-        <Form-item label="备注">
-          <Input placeholder="请输入备注信息"></Input>
+        <Form-item label="备注" prop="remark">
+          <Input placeholder="请输入备注信息" v-model="formItem.remark"></Input>
         </Form-item>
         </Col>
 
@@ -74,6 +75,7 @@
 
   import setting from '../config/setting';
   import util from '../config/util';
+  import _ from 'lodash';
 
   export default {
     computed: {
@@ -87,6 +89,7 @@
         showTimes: false,
         placeholder: '',
         showProc: false,
+        prod_name: '',
         formItem: {
           proc_id: '',
           process_id: '',
@@ -94,7 +97,11 @@
           process_detail_id: '',
           times: '',
           spec: '',
-          prod_working_hours: ''
+          prod_working_hours: '',
+          machine: '',
+          captain: '',
+          remark: '',
+          print_sn: ''
         },
         ruleValidate: {
           print_sn: [{
@@ -143,15 +150,28 @@
           this.showProc = true;
           this.procList = item.proc;
         }
+      },
+      "formItem.print_sn" (val) {
+        if (val == '') {
+          return;
+        }
+        this.getProdName();
       }
     },
     methods: {
+      getProdName: _.debounce(async function () {
+        let url = setting.api.print_sn + this.formItem.print_sn;
+        let data = await this.$http.get(url).then(res => res.data.data);
+        this.prod_name = data.length > 0 ? data[0][0] : '流水号数据载入异常';
+      }, 1000),
       save2local() {
         let formItem = {
           proc_id: '',
           process_id: '',
           process_detail_id: '',
           times: '',
+          machine: '',
+          captain: '',
           // spec: '',
         };
         Object.keys(formItem).forEach(item => {
@@ -175,7 +195,8 @@
         let params = {
           tbl: 0,
           tblname: 'record_short',
-          rec_time: util.getNow()
+          rec_time: util.getNow(),
+          utf2gbk:['machine','captain','remark']
         }
         return Object.assign(params, this.formItem);
       },
@@ -211,6 +232,7 @@
       },
       handleReset(name) {
         this.$refs[name].resetFields();
+        this.prod_name =  '';
       }
     },
     mounted() {

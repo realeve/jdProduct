@@ -59,23 +59,23 @@
             title: '长线产品',
             name: 'long'
           }]
-        }, {
-          title: '统计分析',
-          name: '/stat',
-          icon: 'stats-bars',
-          hasSubMenu: true,
-          subMenu: [{
-            title: '短线产品',
-            name: 'short'
-          }, {
-            title: '长线产品',
-            name: 'long'
-          }]
-        },{
-          hasSubMenu: false,
-          name: '/setting',
-          icon: 'settings',
-          title: '综合设置'
+        // }, {
+        //   title: '统计分析',
+        //   name: '/stat',
+        //   icon: 'stats-bars',
+        //   hasSubMenu: true,
+        //   subMenu: [{
+        //     title: '短线产品',
+        //     name: 'short'
+        //   }, {
+        //     title: '长线产品',
+        //     name: 'long'
+        //   }]
+        // },{
+        //   hasSubMenu: false,
+        //   name: '/setting',
+        //   icon: 'settings',
+        //   title: '综合设置'
         }],
         theme: {
           flag: true,

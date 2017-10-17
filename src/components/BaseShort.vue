@@ -6,7 +6,7 @@
         <Col span="11">
         <Form-item label="产品类别" prop="prod_type_id">
           <Select v-model="formItem.prod_type_id" placeholder="请选择产品类别">
-              <Option v-for="(item,i) in prodType" :value="i" :key="item">{{item}}</Option>
+              <Option v-for="(item,i) in prodType" :value="(i+1)" :key="item">{{item}}</Option>
           </Select>
         </Form-item>
         <Form-item label="订单号" prop="order_id">
@@ -29,7 +29,7 @@
         </Form-item>
         <Form-item label="订单单位" prop="prod_unit_id">
           <Select v-model="formItem.prod_unit_id" placeholder="请选择计量单位">
-              <Option v-for="(item,i) in prodUnit" :value="i" :key="item">{{item}}</Option>
+              <Option v-for="(item,i) in prodUnit" :value="(i+1)" :key="item">{{item}}</Option>
           </Select>
         </Form-item>
         <Form-item label="成品规格(K)" prop="prod_spec">

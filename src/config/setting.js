@@ -12,8 +12,9 @@ let api = {
     // DELETE (POST)
     delete: host + '/api/delete',
 
-    // 主页模块
-    // articleHome: url + 402 + '&M=0',
+    // 根据流水号获取名称
+    print_sn: host + '/api/api?ID=10&p=',
+    
 };
 export default {
     host,
