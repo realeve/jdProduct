@@ -157,6 +157,8 @@
           return;
         }
         let params = this.getParams();
+        console.log(params);
+        return;
         this.$http.post(setting.api.insert, params, {
           emulateJSON: true
         }).then(res => {
@@ -172,7 +174,7 @@
       }
     },
     mounted() {
-      console.log(setting);
+      // console.log(setting);
     }
   }
 
