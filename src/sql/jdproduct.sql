@@ -11,7 +11,7 @@ Target Server Type    : SQL Server
 Target Server Version : 105000
 File Encoding         : 65001
 
-Date: 2017-05-31 17:33:21
+Date: 2017-10-18 13:35:50
 */
 
 
@@ -36,11 +36,19 @@ CREATE TABLE [dbo].[base_short] (
 
 
 GO
+DBCC CHECKIDENT(N'[dbo].[base_short]', RESEED, 8)
+GO
 
 -- ----------------------------
 -- Records of base_short
 -- ----------------------------
 SET IDENTITY_INSERT [dbo].[base_short] ON
+GO
+INSERT INTO [dbo].[base_short] ([id], [prod_type_id], [order_id], [prod_sn], [print_sn], [prod_name], [order_num], [prod_unit_id], [prod_spec], [order_paper_num], [rec_time]) VALUES (N'6', N'1', N'111', N'222', N'333', N'某证书 ', N'100', N'1', N'35', N'50', N'2017-10-16 10:02:36.000')
+GO
+GO
+INSERT INTO [dbo].[base_short] ([id], [prod_type_id], [order_id], [prod_sn], [print_sn], [prod_name], [order_num], [prod_unit_id], [prod_spec], [order_paper_num], [rec_time]) VALUES (N'7', N'2', N'22', N'33', N'44', N'某有价产品', N'1', N'2', N'2', N'3', N'2017-10-17 10:22:51.000')
+GO
 GO
 SET IDENTITY_INSERT [dbo].[base_short] OFF
 GO
@@ -60,18 +68,24 @@ CREATE TABLE [dbo].[record_short] (
 [prod_num] int NULL ,
 [prod_working_hours] float(53) NULL ,
 [times] float(53) NULL ,
-[rec_time] datetime2(7) NULL 
+[rec_time] datetime2(7) NULL ,
+[machine] varchar(255) NULL ,
+[captain] varchar(255) NULL ,
+[remark] varchar(255) NULL 
 )
 
 
 GO
-DBCC CHECKIDENT(N'[dbo].[record_short]', RESEED, 4)
+DBCC CHECKIDENT(N'[dbo].[record_short]', RESEED, 9)
 GO
 
 -- ----------------------------
 -- Records of record_short
 -- ----------------------------
 SET IDENTITY_INSERT [dbo].[record_short] ON
+GO
+INSERT INTO [dbo].[record_short] ([id], [print_sn], [process_id], [process_detail_id], [spec], [proc_id], [prod_num], [prod_working_hours], [times], [rec_time], [machine], [captain], [remark]) VALUES (N'9', N'44', N'2', N'1', N'21', N'2', N'22', N'23', null, N'2017-10-17 15:18:41.0000000', N'某设备 ', N'张三', N'test')
+GO
 GO
 SET IDENTITY_INSERT [dbo].[record_short] OFF
 GO
@@ -543,6 +557,60 @@ INSERT INTO [dbo].[set_prod_unit_short] ([id], [prod_unit]) VALUES (N'8', N'小�
 GO
 GO
 SET IDENTITY_INSERT [dbo].[set_prod_unit_short] OFF
+GO
+
+-- ----------------------------
+-- View structure for view_record_short
+-- ----------------------------
+DROP VIEW [dbo].[view_record_short]
+GO
+CREATE VIEW [dbo].[view_record_short] AS 
+SELECT
+
+c.process_name 生产流程,
+d.process_detail_name 工序,
+b.proc_name 工艺,
+a.machine 机台,
+a.captain 机长,
+a.print_sn 流水号,
+e.prod_name 产品名称,
+a.spec 规格,
+a.prod_num 数量,
+a.prod_working_hours 工时,
+a.times 次数,
+a.rec_time 记录时间,
+a.remark 备注
+
+FROM
+dbo.record_short AS a
+INNER JOIN dbo.set_proc_short AS b ON b.process_id = a.process_id AND b.process_detail_id = a.process_detail_id AND b.proc_id = a.proc_id
+INNER JOIN dbo.set_process_short AS c ON c.process_id = a.process_id
+INNER JOIN dbo.set_process_detail_short AS d ON d.process_detail_id = a.process_detail_id AND d.process_id = a.process_id
+INNER JOIN dbo.base_short AS e ON e.print_sn = a.print_sn
+GO
+
+-- ----------------------------
+-- View structure for view_short_base
+-- ----------------------------
+DROP VIEW [dbo].[view_short_base]
+GO
+CREATE VIEW [dbo].[view_short_base] AS 
+SELECT
+	a.id,
+	b.prod_name 产品类别,
+	a.order_id 订单号,
+	a.prod_sn 产品编号,
+	a.print_sn 流水号,
+	a.prod_name 产品名称 ,
+	a.order_num 订单数量,
+	c.prod_unit 订单单位,
+	a.prod_spec 产品规格,
+	a.order_paper_num 投纸数,
+	a.rec_time 记录时间
+FROM
+	base_short a
+INNER JOIN set_prod_type_short b ON a.prod_type_id = b.id
+INNER JOIN set_prod_unit_short c ON a.prod_unit_id = c.id
 GO
 
 -- ----------------------------
