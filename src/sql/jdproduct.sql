@@ -18,7 +18,7 @@ Date: 2017-10-18 13:35:50
 -- ----------------------------
 -- Table structure for base_short
 -- ----------------------------
-DROP TABLE [dbo].[base_short]
+-- DROP TABLE [dbo].[base_short]
 GO
 CREATE TABLE [dbo].[base_short] (
 [id] int NOT NULL IDENTITY(1,1) ,
@@ -56,7 +56,7 @@ GO
 -- ----------------------------
 -- Table structure for record_short
 -- ----------------------------
-DROP TABLE [dbo].[record_short]
+-- DROP TABLE [dbo].[record_short]
 GO
 CREATE TABLE [dbo].[record_short] (
 [id] int NOT NULL IDENTITY(1,1) ,
@@ -93,7 +93,7 @@ GO
 -- ----------------------------
 -- Table structure for set_proc_short
 -- ----------------------------
-DROP TABLE [dbo].[set_proc_short]
+-- DROP TABLE [dbo].[set_proc_short]
 GO
 CREATE TABLE [dbo].[set_proc_short] (
 [id] int NOT NULL IDENTITY(1,1) ,
@@ -308,7 +308,7 @@ GO
 -- ----------------------------
 -- Table structure for set_process_detail_short
 -- ----------------------------
-DROP TABLE [dbo].[set_process_detail_short]
+-- DROP TABLE [dbo].[set_process_detail_short]
 GO
 CREATE TABLE [dbo].[set_process_detail_short] (
 [id] int NOT NULL IDENTITY(1,1) ,
@@ -417,7 +417,7 @@ GO
 -- ----------------------------
 -- Table structure for set_process_short
 -- ----------------------------
-DROP TABLE [dbo].[set_process_short]
+-- DROP TABLE [dbo].[set_process_short]
 GO
 CREATE TABLE [dbo].[set_process_short] (
 [id] int NOT NULL IDENTITY(1,1) ,
@@ -459,7 +459,7 @@ GO
 -- ----------------------------
 -- Table structure for set_prod_type_short
 -- ----------------------------
-DROP TABLE [dbo].[set_prod_type_short]
+-- DROP TABLE [dbo].[set_prod_type_short]
 GO
 CREATE TABLE [dbo].[set_prod_type_short] (
 [id] int NOT NULL IDENTITY(1,1) ,
@@ -515,7 +515,7 @@ GO
 -- ----------------------------
 -- Table structure for set_prod_unit_short
 -- ----------------------------
-DROP TABLE [dbo].[set_prod_unit_short]
+-- DROP TABLE [dbo].[set_prod_unit_short]
 GO
 CREATE TABLE [dbo].[set_prod_unit_short] (
 [id] int NOT NULL IDENTITY(1,1) ,

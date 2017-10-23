@@ -18,7 +18,7 @@ Date: 2017-10-18 13:35:35
 -- ----------------------------
 -- Table structure for tbl_menu_detail
 -- ----------------------------
-DROP TABLE [dbo].[tbl_menu_detail]
+-- DROP TABLE [dbo].[tbl_menu_detail]
 GO
 CREATE TABLE [dbo].[tbl_menu_detail] (
 [id] int NOT NULL IDENTITY(1,1) ,
@@ -80,7 +80,7 @@ GO
 -- ----------------------------
 -- Table structure for tbl_menu_list
 -- ----------------------------
-DROP TABLE [dbo].[tbl_menu_list]
+-- DROP TABLE [dbo].[tbl_menu_list]
 GO
 CREATE TABLE [dbo].[tbl_menu_list] (
 [id] int NOT NULL IDENTITY(1,1) ,
@@ -114,7 +114,7 @@ GO
 -- ----------------------------
 -- Table structure for tblApi
 -- ----------------------------
-DROP TABLE [dbo].[tblApi]
+-- DROP TABLE [dbo].[tblApi]
 GO
 CREATE TABLE [dbo].[tblApi] (
 [ID] int NOT NULL IDENTITY(1,1) ,
@@ -326,7 +326,7 @@ GO
 -- ----------------------------
 -- Table structure for tblDataBaseInfo
 -- ----------------------------
-DROP TABLE [dbo].[tblDataBaseInfo]
+-- DROP TABLE [dbo].[tblDataBaseInfo]
 GO
 CREATE TABLE [dbo].[tblDataBaseInfo] (
 [ID] int NOT NULL IDENTITY(1,1) ,
@@ -356,7 +356,7 @@ GO
 -- ----------------------------
 -- Table structure for tblDepartMent
 -- ----------------------------
-DROP TABLE [dbo].[tblDepartMent]
+-- DROP TABLE [dbo].[tblDepartMent]
 GO
 CREATE TABLE [dbo].[tblDepartMent] (
 [ID] int NOT NULL IDENTITY(1,1) ,
@@ -417,7 +417,7 @@ GO
 -- ----------------------------
 -- Table structure for tblSettings_Select_List
 -- ----------------------------
-DROP TABLE [dbo].[tblSettings_Select_List]
+-- DROP TABLE [dbo].[tblSettings_Select_List]
 GO
 CREATE TABLE [dbo].[tblSettings_Select_List] (
 [ID] int NOT NULL IDENTITY(1,1) ,
@@ -444,7 +444,7 @@ GO
 -- ----------------------------
 -- Table structure for tblUser
 -- ----------------------------
-DROP TABLE [dbo].[tblUser]
+-- DROP TABLE [dbo].[tblUser]
 GO
 CREATE TABLE [dbo].[tblUser] (
 [ID] int NOT NULL IDENTITY(1,1) ,
