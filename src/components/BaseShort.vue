@@ -153,9 +153,10 @@
       },
       loadFromLocal() {
         let str = localStorage.getItem('baseShort');
-        if (typeof str == 'undefined') {
+        if (!(str instanceof String)) {
           return;
         }
+        console.log(str);
         let obj = JSON.parse(str);
         Object.keys(obj).forEach(item => {
           this.formItem[item] = obj[item];

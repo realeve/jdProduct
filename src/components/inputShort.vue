@@ -6,12 +6,12 @@
         <Col span="11">
         <Form-item label="生产流程">
           <Select v-model="formItem.process_id" placeholder="请选择生产流程">
-              <Option v-for="item in processList" :value="item.value" :key="item">{{item.name}}</Option>
+              <Option v-for="(item,i) in processList" :value="item.value" :key="i">{{item.name}}</Option>
           </Select>
         </Form-item>
         <Form-item label="工序">
           <Select v-model="formItem.process_detail_id" placeholder="请选择工序">
-              <Option v-for="(item,i) in processDetailList" :value="item.value" :key="item">{{item.name}}</Option>
+              <Option v-for="(item,i) in processDetailList" :value="item.value" :key="i">{{item.name}}</Option>
           </Select>
         </Form-item>
         <Form-item label="设备">
@@ -38,7 +38,7 @@
         <Col span="11" offset="2">
         <Form-item v-if="showProc" label="工艺" prop="proc_id">
           <Select v-model="formItem.proc_id" placeholder="请选择工艺">
-              <Option v-for="(item,i) in procList" :value="item.value" :key="item">{{item.name}}</Option>
+              <Option v-for="(item,i) in procList" :value="item.value" :key="i">{{item.name}}</Option>
           </Select>
         </Form-item>
         <Form-item label="规格" prop="spec">
