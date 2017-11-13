@@ -27,159 +27,161 @@
   </div>
 </template>
 <script>
-  import IAffix from '@/components/UI/IAffix';
+import IAffix from "@/components/UI/IAffix";
 
-  export default {
-    components: {
-      IAffix
-    },
-    data() {
-      return {
-        menuList: [{
-          title: '基础数据',
-          name: '/base',
-          icon: 'settings',
+export default {
+  components: {
+    IAffix
+  },
+  data() {
+    return {
+      menuList: [
+        {
+          title: "基础数据",
+          name: "/base",
+          icon: "settings",
           hasSubMenu: true,
-          subMenu: [{
-            title: '短线产品',
-            name: 'short'
-          }, {
-            title: '长线产品',
-            name: 'long'
-          }]
-        },{
-          title: '数据录入',
-          name: '/input',
-          icon: 'ios-grid-view',
-          hasSubMenu: true,
-          subMenu: [{
-            title: '短线产品',
-            name: 'short'
-          }, {
-            title: '长线产品',
-            name: 'long'
-          }]
-        // }, {
-        //   title: '统计分析',
-        //   name: '/stat',
-        //   icon: 'stats-bars',
-        //   hasSubMenu: true,
-        //   subMenu: [{
-        //     title: '短线产品',
-        //     name: 'short'
-        //   }, {
-        //     title: '长线产品',
-        //     name: 'long'
-        //   }]
-        // },{
-        //   hasSubMenu: false,
-        //   name: '/setting',
-        //   icon: 'settings',
-        //   title: '综合设置'
-        }],
-        theme: {
-          flag: true,
-          name: 'light'
+          subMenu: [
+            {
+              title: "短线产品",
+              name: "short"
+            },
+            {
+              title: "长线产品",
+              name: "long"
+            }
+          ]
         },
-        bread: {
-          path: '/input',
-          name: '数据录入',
-          path2: '/short',
-          name2: '短线产品'
+        {
+          title: "数据录入",
+          name: "/input",
+          icon: "ios-grid-view",
+          hasSubMenu: true,
+          subMenu: [
+            {
+              title: "短线产品",
+              name: "short"
+            },
+            {
+              title: "长线产品",
+              name: "long"
+            }
+          ]
+        },
+        {
+          title: "基础设置",
+          name: "/setting",
+          icon: "stats-bars",
+          hasSubMenu: true,
+          subMenu: [
+            {
+              title: "产品类型",
+              name: "prod_name"
+            },
+            {
+              title: "产品工序",
+              name: "process"
+            },
+            {
+              title: "工序项目",
+              name: "process_detail"
+            }
+          ]
         }
-      }
-    },
-    methods: {
-      changeTheme() {
-        this.theme.flag = !this.theme.flag;
-        this.theme.name = this.theme.flag ? 'light' : 'dark';
+      ],
+      theme: {
+        flag: true,
+        name: "light"
       },
-      getMenu(path) {
-        this.$router.push(path);
-        switch (path) {
-          case '/base/short':
-            this.bread = {
-              path: '/input',
-              name: '基础数据',
-              path2: path,
-              name2: '短线产品'
-            }
-            break;
-          case '/base/long':
-            this.bread = {
-              path: '/input',
-              name: '基础数据',
-              path2: path,
-              name2: '长线产品'
-            }
-            break;
-          case '/input/short':
-            this.bread = {
-              path: '/input',
-              name: '数据录入',
-              path2: path,
-              name2: '短线产品'
-            }
-            break;
-          case '/input/long':
-            this.bread = {
-              path: '/input',
-              name: '数据录入',
-              path2: path,
-              name2: '长线产品'
-            }
-            break;
-          case '/stat/short':
-            this.bread = {
-              path: '/stat',
-              name: '统计分析',
-              path2: path,
-              name2: '短线产品'
-            }
-            break;
-          case '/stat/long':
-            this.bread = {
-              path: '/stat',
-              name: '统计分析',
-              path2: path,
-              name2: '长线产品'
-            }
-            break;
-          case '/setting':
-            this.bread = {
-              path,
-              name: '综合设置',
-              path2: '',
-              name2: ''
-            }
-            break;
-        }
+      bread: {
+        path: "/input",
+        name: "数据录入",
+        path2: "/short",
+        name2: "短线产品"
+      }
+    };
+  },
+  methods: {
+    changeTheme() {
+      this.theme.flag = !this.theme.flag;
+      this.theme.name = this.theme.flag ? "light" : "dark";
+    },
+    getMenu(path) {
+      this.$router.push(path);
+      switch (path) {
+        case "/base/short":
+          this.bread = {
+            path: "/input",
+            name: "基础数据",
+            path2: path,
+            name2: "短线产品"
+          };
+          break;
+        case "/base/long":
+          this.bread = {
+            path: "/input",
+            name: "基础数据",
+            path2: path,
+            name2: "长线产品"
+          };
+          break;
+        case "/input/short":
+          this.bread = {
+            path: "/input",
+            name: "数据录入",
+            path2: path,
+            name2: "短线产品"
+          };
+          break;
+        case "/input/long":
+          this.bread = {
+            path: "/input",
+            name: "数据录入",
+            path2: path,
+            name2: "长线产品"
+          };
+          break;
+        case "/setting/prod_name":
+          this.bread = {
+            path,
+            name: "综合设置",
+            path2: path,
+            name2: "产品品种"
+          };
+          break;
+        case "/setting/process":
+          this.bread = {
+            path,
+            name: "综合设置",
+            path2: path,
+            name2: "产品工序"
+          };
+          break;
       }
     }
   }
-
+};
 </script>
 
 <style scoped lang="less">
-  .layout-breadcrumb {
-    padding: 10px 15px 0;
-  }
+.layout-breadcrumb {
+  padding: 10px 15px 0;
+}
 
-  .ivu-menu-light {
-    background: rgba(255, 255, 255, 0.7);
-  }
+.ivu-menu-light {
+  background: rgba(255, 255, 255, 0.7);
+}
 
-  .ivu-menu-dark {
-    background: rgba(19, 17, 37, 0.92);
-  }
+.ivu-menu-dark {
+  background: rgba(19, 17, 37, 0.92);
+}
 
-  .ivu-menu {
-    display: flex;
-    justify-content: center;
-  }
+.ivu-menu {
+  display: flex;
+  justify-content: center;
+}
 
-  .margin-top-sticky {
-    padding-top: 90px;
-  }
-
+.margin-top-sticky {
+  padding-top: 90px;
+}
 </style>
