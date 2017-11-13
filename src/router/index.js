@@ -28,10 +28,10 @@ export default new Router({
         name: 'BaseShort',
         component: BaseShort
     }, {
-        path: '/base/long',
-        name: 'BaseLong',
-        component: BaseLong
-    }, {
+        //     path: '/base/long',
+        //     name: 'BaseLong',
+        //     component: BaseLong
+        // }, {
         path: '/setting/prod_name',
         name: 'LongProdName',
         component: LongProdName

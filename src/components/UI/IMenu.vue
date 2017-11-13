@@ -45,11 +45,11 @@ export default {
             {
               title: "短线产品",
               name: "short"
-            },
-            {
-              title: "长线产品",
-              name: "long"
             }
+            // {
+            //   title: "长线产品",
+            //   name: "long"
+            // }
           ]
         },
         {

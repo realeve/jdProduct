@@ -6,17 +6,17 @@
         <Col span="11">
         <Form-item label="产品类别" prop="prod_type">
           <Select v-model="formItem.prod_type" placeholder="请选择产品类别">
-              <Option v-for="item in prodTypeList" :value="item.value" :key="item">{{item.name}}</Option>
+            <Option v-for="item in prodTypeList" :value="item.value" :key="item.value">{{item.name}}</Option>
           </Select>
         </Form-item>
         <Form-item label="工序" prop="process_order">
           <Select v-model="formItem.process_order" placeholder="请选择工序">
-              <Option v-for="(item,i) in procList" :value="i" :key="item">{{item.name}}</Option>
+            <Option v-for="(item,i) in procList" :value="i" :key="i">{{item.name}}</Option>
           </Select>
         </Form-item>
         <Form-item label="项目" prop="project">
           <Select v-model="formItem.project" placeholder="请选择项目">
-              <Option v-for="(item,i) in processDetailList" :value="item.value" :key="item">{{item.name}}</Option>
+            <Option v-for="(item,i) in processDetailList" :value="item.value" :key="i">{{item.name}}</Option>
           </Select>
         </Form-item>
         <Form-item label="规格" prop="spec">
@@ -60,80 +60,83 @@
   </Form>
 </template>
 <style scoped>
-  .margin-top-20 {
-    margin-top: 20px;
-  }
+.margin-top-20 {
+  margin-top: 20px;
+}
 
-  .large-card {
-    min-height: 400px;
-  }
-
+.large-card {
+  min-height: 400px;
+}
 </style>
 <script>
-  import prodTypeList from "../assets/data/long.json";
+import prodTypeList from "../assets/data/long.json";
 
-  export default {
-    computed: {
-
-    },
-    data() {
-      return {
-        prodTypeList,
-        procList: [],
-        processDetailList: [],
-        formItem: {
-          prod_type: '',
-          process_order: '',
-          project: '',
-          spec: '',
-          inventory: '',
-          income: '',
-          produce_num: '',
-          produce_hours: '',
-          outcome_waste_product: '',
-          outcome_white_paper: '',
-          outcome_sample: '',
-          outcome_semi_manu: ''
-        },
-        ruleValidate: {
-          proc_num: [{
-            required: true,
-            message: '请录入数量',
-            trigger: 'blur'
-          }],
-          spec: [{
-            required: true,
-            message: '请录入规格',
-            trigger: 'blur'
-          }]
-        }
-      }
-    },
-    watch: {
-      "formItem.prod_type"(val){
-        this.formItem.process_order = '';
-        let item = this.prodTypeList[val];
-        this.procList = [];
-        if (typeof item.detail != 'undefined'){
-          this.procList = item.detail;
-        }
-      }
-    },
-    methods: {
-      handleSubmit(name) {
-        console.log(this.formItem);
-        this.$refs[name].validate(valid => {
-          if (valid) {
-            this.$Message.success('提交成功!');
-          } else {
-            this.$Message.error('表单验证失败!');
-          }
-        });
+export default {
+  computed: {},
+  data() {
+    return {
+      prodTypeList,
+      procList: [],
+      processDetailList: [],
+      formItem: {
+        prod_type: "",
+        process_order: "",
+        project: "",
+        spec: "",
+        inventory: "",
+        income: "",
+        produce_num: "",
+        produce_hours: "",
+        outcome_waste_product: "",
+        outcome_white_paper: "",
+        outcome_sample: "",
+        outcome_semi_manu: ""
       },
-      handleReset(name) {
-        this.$refs[name].resetFields();
+      ruleValidate: {
+        proc_num: [
+          {
+            required: true,
+            message: "请录入数量",
+            trigger: "blur"
+          }
+        ],
+        spec: [
+          {
+            required: true,
+            message: "请录入规格",
+            trigger: "blur"
+          }
+        ]
+      }
+    };
+  },
+  watch: {
+    "formItem.prod_type"(val) {
+      this.formItem.process_order = "";
+      let item = this.prodTypeList[val];
+      this.procList = [];
+      if (typeof item.detail != "undefined") {
+        this.procList = item.detail;
       }
     }
+  },
+  methods: {
+    handleSubmit(name) {
+      console.log(this.formItem);
+      this.$refs[name].validate(valid => {
+        if (valid) {
+          this.$Message.success("提交成功!");
+        } else {
+          this.$Message.error("表单验证失败!");
+        }
+      });
+    },
+    handleReset(name) {
+      this.$refs[name].resetFields();
+    }
+  },
+  mounted() {
+    this.$Message.success("本页面需要调整基础信息来源，从数据库中读取");
   }
-
+};
 </script>
