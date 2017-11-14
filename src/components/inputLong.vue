@@ -4,23 +4,20 @@
       <p slot="title">生产信息</p>
       <Row>
         <Col span="11">
-        <Form-item label="产品类别" prop="prod_type">
-          <Select v-model="formItem.prod_type" placeholder="请选择产品类别">
+        <Form-item label="产品类别" prop="prod_id">
+          <Select v-model="formItem.prod_id" placeholder="请选择产品类别">
             <Option v-for="item in prodTypeList" :value="item.value" :key="item.value">{{item.name}}</Option>
           </Select>
         </Form-item>
-        <Form-item label="工序" prop="process_order">
-          <Select v-model="formItem.process_order" placeholder="请选择工序">
-            <Option v-for="(item,i) in procList" :value="i" :key="i">{{item.name}}</Option>
+        <Form-item label="工序" prop="process_id">
+          <Select v-model="formItem.process_id" placeholder="请选择工序">
+            <Option v-for="(item,i) in procList" :value="item.value" :key="i">{{item.name}}</Option>
           </Select>
         </Form-item>
-        <Form-item label="项目" prop="project">
-          <Select v-model="formItem.project" placeholder="请选择项目">
+        <Form-item label="项目" prop="process_detail_id">
+          <Select v-model="formItem.process_detail_id" placeholder="请选择项目">
             <Option v-for="(item,i) in processDetailList" :value="item.value" :key="i">{{item.name}}</Option>
           </Select>
-        </Form-item>
-        <Form-item label="规格" prop="spec">
-          <Input v-model="formItem.spec" placeholder="请输入规格"></Input>
         </Form-item>
         <Form-item label="昨日库存" prop="inventory">
           <Input v-model="formItem.inventory" placeholder="请输入昨日库存(无需人工录入)"></Input>
@@ -70,19 +67,19 @@
 </style>
 <script>
 import prodTypeList from "../assets/data/long.json";
+import setting from "../config/setting";
 
 export default {
   computed: {},
   data() {
     return {
-      prodTypeList,
+      prodTypeList: [],
       procList: [],
       processDetailList: [],
       formItem: {
-        prod_type: "",
-        process_order: "",
-        project: "",
-        spec: "",
+        prod_id: "",
+        process_id: "",
+        process_detail_id: "",
         inventory: "",
         income: "",
         produce_num: "",
@@ -93,17 +90,21 @@ export default {
         outcome_semi_manu: ""
       },
       ruleValidate: {
-        proc_num: [
+        prod_id: [
           {
             required: true,
-            message: "请录入数量",
             trigger: "blur"
           }
         ],
-        spec: [
+        process_id: [
           {
             required: true,
-            message: "请录入规格",
+            trigger: "blur"
+          }
+        ],
+        process_detail_id: [
+          {
+            required: true,
             trigger: "blur"
           }
         ]
@@ -111,32 +112,75 @@ export default {
     };
   },
   watch: {
-    "formItem.prod_type"(val) {
-      this.formItem.process_order = "";
-      let item = this.prodTypeList[val];
-      this.procList = [];
-      if (typeof item.detail != "undefined") {
-        this.procList = item.detail;
-      }
+    "formItem.prod_id"(val) {
+      this.loadProcess(val);
+    },
+    "formItem.process_id"(val) {
+      this.loadProcessDetail(val);
     }
   },
   methods: {
-    handleSubmit(name) {
-      console.log(this.formItem);
+    handleSubmit: async function(name) {
       this.$refs[name].validate(valid => {
-        if (valid) {
-          this.$Message.success("提交成功!");
-        } else {
+        if (!valid) {
           this.$Message.error("表单验证失败!");
+          return;
         }
+        this.submitData();
       });
+    },
+    submitData: async function() {
+      let params = {
+        tbl: 0,
+        tblname: "record_long"
+      };
+      params = Object.assign(params, this.formItem);
+
+      let url = setting.api.insert;
+      await this.$http
+        .post(url, params, {
+          emulateJSON: true
+        })
+        .then(res => {
+          this.$Message.success("成功添加数据!");
+        });
+
+      this.handleReset("formItem");
+    },
+    loadProdType: async function() {
+      let url = setting.url;
+      let apiId = 13;
+      this.prodTypeList = await this.$http
+        .get(url + apiId + "&M=0")
+        .then(res => res.data.data);
+    },
+    loadProcess: async function(process_id = this.formItem.prod_id) {
+      if (process_id == "") {
+        return;
+      }
+      let url = setting.url;
+      let apiId = 14;
+      this.procList = await this.$http
+        .get(url + apiId + "&M=0&pid=" + process_id)
+        .then(res => res.data.data);
+    },
+    loadProcessDetail: async function(process_id = this.formItem.process_id) {
+      this.formItem.process_detail_id = "";
+      if (process_id === "") {
+        return;
+      }
+      let url = `${setting.url}15&M=0&prodid=${this.formItem
+        .prod_id}&processid=${process_id}`;
+      this.processDetailList = await this.$http
+        .get(url)
+        .then(res => res.data.data);
     },
     handleReset(name) {
       this.$refs[name].resetFields();
     }
   },
   mounted() {
-    this.$Message.success("本页面需要调整基础信息来源，从数据库中读取");
+    this.loadProdType();
   }
 };
 </script>
