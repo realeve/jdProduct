@@ -1,4 +1,4 @@
-var host = (process.env.NODE_ENV == 'development') ? '//localhost:100' : '//10.8.2.133:100'
+var host = (process.env.NODE_ENV == 'development') ? '//localhost:100' : '//10.8.36.14'
 
 var url = host + '/api/api?ID='
 
