@@ -40,7 +40,8 @@
         </Col>
         <Col span="11" offset="13">
         <Form-item v-show="formItem.spec_num>0">
-          <Button type="primary" @click="handleSubmit">添加</Button>
+          <Button v-show="formItem.cur_detail!=''" type="success" @click="handleSubmit(1)">在 {{curDetailItem.name}} 后插入</Button>
+          <Button type="primary" @click="handleSubmit(0)">添加</Button>
         </Form-item>
         </Col>
       </Row>
@@ -77,6 +78,16 @@ export default {
       }
     };
   },
+  computed: {
+    curDetailItem() {
+      if (this.formItem.cur_detail == "") {
+        return "";
+      }
+      return this.detailList.find(
+        item => item.value == this.formItem.cur_detail
+      );
+    }
+  },
   watch: {
     "formItem.cur_type"(val) {
       if (val == "") {
@@ -98,7 +109,12 @@ export default {
       }
       let url = `${setting.url}15&M=0&prodid=${this.formItem
         .cur_type}&processid=${process_id}`;
-      this.detailList = await this.$http.get(url).then(res => res.data.data);
+      this.detailList = await this.$http.get(url).then(res =>
+        res.data.data.map(item => {
+          item.order_index = parseInt(item.order_index);
+          return item;
+        })
+      );
       this.handleReset();
     },
     loadProcess: async function(process_id = this.formItem.cur_type) {
@@ -111,7 +127,7 @@ export default {
         .get(url + apiId + "&M=0&pid=" + process_id)
         .then(res => res.data.data);
     },
-    handleSubmit: async function() {
+    handleSubmit: async function(setCurOrderIndex) {
       let params = {
         tbl: 0,
         tblname: "set_process_detail_long",
@@ -121,6 +137,18 @@ export default {
         prod_id: this.formItem.cur_type,
         spec_num: this.formItem.spec_num
       };
+
+      // 如果没有数据
+      if (this.detailList.length == 0) {
+        params.order_index = 0;
+      } else {
+        params.order_index =
+          this.detailList[this.detailList.length - 1].order_index + 1;
+      }
+      // 在XX后插入数据
+      if (setCurOrderIndex) {
+        params.order_index = this.curDetailItem.order_index;
+      }
 
       let url = setting.api.insert;
       await this.$http
