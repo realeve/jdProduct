@@ -105,13 +105,21 @@ export default {
         .get(url + apiId + "&M=0")
         .then(res => res.data.data);
     },
+    getNewId() {
+      let max = 0;
+      this.detailList.forEach(item => {
+        max = Math.max(max, parseInt(item.value));
+      });
+      return max + 1;
+    },
     handleSubmit: async function(setCurOrderIndex) {
       let params = {
         tbl: 0,
         tblname: "set_process_detail_short",
         utf2gbk: ["process_detail_name"],
         process_detail_name: this.formItem.detail_name,
-        process_id: this.formItem.cur_process
+        process_id: this.formItem.cur_process,
+        process_detail_id: this.detailList.length == 0 ? 0 : this.getNewId()
       };
 
       // 如果没有数据

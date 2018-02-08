@@ -138,6 +138,13 @@ export default {
         .get(url + apiId + "&M=0")
         .then(res => res.data.data);
     },
+    getNewId(key) {
+      let max = 0;
+      this.procList.forEach(item => {
+        max = Math.max(max, parseInt(item[key]));
+      });
+      return max + 1;
+    },
     handleSubmit: async function(setCurOrderIndex) {
       let params = {
         tbl: 0,
@@ -153,10 +160,8 @@ export default {
         params.order_index = 0;
         params.proc_id = 0;
       } else {
-        params.order_index =
-          parseInt(this.procList[this.procList.length - 1].order_index) + 1;
-        params.proc_id =
-          parseInt(this.procList[this.procList.length - 1].value) + 1;
+        params.order_index = this.getNewId("order_index");
+        params.proc_id = this.getNewId("value");
       }
       // 在XX后插入数据
       if (setCurOrderIndex) {

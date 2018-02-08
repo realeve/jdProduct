@@ -63,12 +63,20 @@ export default {
     };
   },
   methods: {
+    getNewId() {
+      let max = 0;
+      this.processList.forEach(item => {
+        max = Math.max(max, parseInt(item.value));
+      });
+      return max + 1;
+    },
     handleSubmit: async function() {
       let params = {
         tbl: 0,
         tblname: "set_process_short",
         utf2gbk: ["process_name"],
-        process_name: this.formItem.process_name
+        process_name: this.formItem.process_name,
+        process_id: this.getNewId()
       };
 
       let url = setting.api.insert;
