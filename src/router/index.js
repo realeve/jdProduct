@@ -8,6 +8,12 @@ import LongProdName from '@/components/setting/long/ProdName'
 import Process from '@/components/setting/long/Process'
 import ProcessDetail from '@/components/setting/long/ProcessDetail'
 
+
+import ShortProdUnit from '@/components/setting/short/ProdUnit'
+import ShortProdName from '@/components/setting/short/ProdName'
+import ShortProcess from '@/components/setting/short/Process'
+import ShortProcessDetail from '@/components/setting/short/ProcessDetail'
+
 Vue.use(Router)
 
 export default new Router({
@@ -28,20 +34,32 @@ export default new Router({
         name: 'BaseShort',
         component: BaseShort
     }, {
-        //     path: '/base/long',
-        //     name: 'BaseLong',
-        //     component: BaseLong
-        // }, {
-        path: '/setting/prod_name',
+        path: '/setting/long/prod_name',
         name: 'LongProdName',
         component: LongProdName
     }, {
-        path: '/setting/process',
+        path: '/setting/long/process',
         name: 'Process',
         component: Process
     }, {
-        path: '/setting/process_detail',
+        path: '/setting/long/process_detail',
         name: 'ProcessDetail',
         component: ProcessDetail
+    }, {
+        path: '/setting/short/prod_unit',
+        name: 'ShortProdUnit',
+        component: ShortProdUnit
+    }, {
+        path: '/setting/short/prod_name',
+        name: 'ShortProdName',
+        component: ShortProdName
+    }, {
+        path: '/setting/short/process',
+        name: 'Process',
+        component: ShortProcess
+    }, {
+        path: '/setting/short/process_detail',
+        name: 'ProcessDetail',
+        component: ShortProcessDetail
     }]
 })

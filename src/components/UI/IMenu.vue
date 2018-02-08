@@ -3,14 +3,17 @@
     <IAffix @on-change="changeTheme">
       <Menu mode="horizontal" :theme="theme.name" active-name="1" @on-select="getMenu">
         <template v-for="item in menuList">
-          <Submenu v-if="item.hasSubMenu" :name="item.name">
+          <Submenu v-if="item.hasSubMenu" :name="item.name" :key="item.name">
             <template slot="title">
               <Icon :type="item.icon"></Icon>
               {{item.title}}
             </template>
-            <Menu-item v-for="subMenu in item.subMenu" :name="item.name+'/'+subMenu.name" :key="item.name+'/'+subMenu.name">{{subMenu.title}}</Menu-item>
+            <Menu-item v-if="!item.subMenu[0].hasSubMenu" v-for="subMenu in item.subMenu" :name="item.name+'/'+subMenu.name" :key="item.name+'/'+subMenu.name">{{subMenu.title}}</Menu-item>
+            <MenuGroup v-if="item.subMenu[0].hasSubMenu" v-for="subMenu in item.subMenu" :name="item.name+'/'+subMenu.name" :key="item.name+'/'+subMenu.name" :title="subMenu.title">
+              <Menu-item v-for="menuItem in subMenu.subMenu" :name="item.name+'/'+subMenu.name+'/'+menuItem.name" :key="item.name+'/'+subMenu.name+'/'+menuItem.name">{{menuItem.title}}</Menu-item>
+            </MenuGroup>
           </Submenu>
-          <Menu-item v-else :name="item.name">
+          <Menu-item v-else :name="item.name" :key="item.name">
             <Icon type="settings"></Icon>
             {{item.title}}
           </Menu-item>
@@ -75,16 +78,46 @@ export default {
           hasSubMenu: true,
           subMenu: [
             {
-              title: "产品类型",
-              name: "prod_name"
+              title: "长线",
+              name: "long",
+              hasSubMenu: true,
+              subMenu: [
+                {
+                  title: "产品类型",
+                  name: "prod_name"
+                },
+                {
+                  title: "产品工序",
+                  name: "process"
+                },
+                {
+                  title: "工序项目",
+                  name: "process_detail"
+                }
+              ]
             },
             {
-              title: "产品工序",
-              name: "process"
-            },
-            {
-              title: "工序项目",
-              name: "process_detail"
+              title: "短线",
+              name: "short",
+              hasSubMenu: true,
+              subMenu: [
+                {
+                  title: "订单单位",
+                  name: "prod_unit"
+                },
+                {
+                  title: "产品类别",
+                  name: "prod_name"
+                },
+                {
+                  title: "生产流程",
+                  name: "process"
+                },
+                {
+                  title: "工序",
+                  name: "process_detail"
+                }
+              ]
             }
           ]
         }
@@ -141,7 +174,7 @@ export default {
             name2: "长线产品"
           };
           break;
-        case "/setting/prod_name":
+        case "/setting/long/prod_name":
           this.bread = {
             path,
             name: "综合设置",
@@ -149,7 +182,7 @@ export default {
             name2: "产品品种"
           };
           break;
-        case "/setting/process":
+        case "/setting/long/process":
           this.bread = {
             path,
             name: "综合设置",
