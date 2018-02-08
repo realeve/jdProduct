@@ -13,6 +13,7 @@ import ShortProdUnit from '@/components/setting/short/ProdUnit'
 import ShortProdName from '@/components/setting/short/ProdName'
 import ShortProcess from '@/components/setting/short/Process'
 import ShortProcessDetail from '@/components/setting/short/ProcessDetail'
+import ShortProcDetail from '@/components/setting/short/ProcDetail'
 
 Vue.use(Router)
 
@@ -61,5 +62,9 @@ export default new Router({
         path: '/setting/short/process_detail',
         name: 'ProcessDetail',
         component: ShortProcessDetail
+    }, {
+        path: '/setting/short/proc_detail',
+        name: 'ProcDetail',
+        component: ShortProcDetail
     }]
 })

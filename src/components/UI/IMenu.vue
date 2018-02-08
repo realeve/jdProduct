@@ -114,8 +114,12 @@ export default {
                   name: "process"
                 },
                 {
-                  title: "工序",
+                  title: "生产工序",
                   name: "process_detail"
+                },
+                {
+                  title: "生产工艺",
+                  name: "proc_detail"
                 }
               ]
             }

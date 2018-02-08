@@ -1,7 +1,7 @@
 <template>
   <Form ref="formItem" :model="formItem" :label-width="80">
     <Card dis-hover class="margin-top-20 large-card">
-      <p slot="title">产品类型</p>
+      <p slot="title">工序项目</p>
       <Row>
         <Col span="11">
         <Form-item label="产品类型">
@@ -107,14 +107,17 @@ export default {
       if (process_id == "") {
         return;
       }
-      let url = `${setting.url}15&M=0&prodid=${this.formItem
-        .cur_type}&processid=${process_id}`;
-      this.detailList = await this.$http.get(url).then(res =>
-        res.data.data.map(item => {
-          item.order_index = parseInt(item.order_index);
-          return item;
-        })
-      );
+      let url = `${setting.url}15&M=0&prodid=${
+        this.formItem.cur_type
+      }&processid=${process_id}`;
+      this.detailList = await this.$http.get(url).then(res => {
+        return res.data.rows == 0
+          ? []
+          : res.data.data.map(item => {
+              item.order_index = parseInt(item.order_index);
+              return item;
+            });
+      });
       this.handleReset();
     },
     loadProcess: async function(process_id = this.formItem.cur_type) {

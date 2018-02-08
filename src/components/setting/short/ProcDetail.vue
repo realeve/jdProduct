@@ -1,7 +1,7 @@
 <template>
   <Form ref="formItem" :model="formItem" :label-width="80">
     <Card dis-hover class="margin-top-20 large-card">
-      <p slot="title">生产工序</p>
+      <p slot="title">生产工艺</p>
       <Row>
         <Col span="11">
         <Form-item label="生产流程">
@@ -13,21 +13,28 @@
         <Col span="11" offset="2">
         <Form-item v-show="formItem.cur_process!=''" label="生产工序">
           <Select v-model="formItem.cur_detail" placeholder="预览生产工序">
-            <Option v-for="(item,i) in detailList" :value="item.value" :key="i">{{item.name}}</Option>
+            <Option v-for="(item,i) in detailList" :value="item.value" :key="i">{{item.value}} {{item.name}}</Option>
+          </Select>
+        </Form-item>
+        </Col>
+        <Col span="11">
+        <Form-item label="生产工艺">
+          <Select v-model="formItem.cur_proc" placeholder="预览生产工艺">
+            <Option v-for="(item,i) in procList" :value="item.value" :key="i">{{item.name}}</Option>
           </Select>
         </Form-item>
         </Col>
 
-        <Col span="11">
-        <Form-item v-show="formItem.cur_process!=''" label="增加工序" prop="spec">
-          <Input v-model="formItem.detail_name" placeholder="请输入工序名称"></Input>
+        <Col span="11" offset="2">
+        <Form-item v-show="formItem.cur_detail!=''" label="增加工艺" prop="spec">
+          <Input v-model="formItem.proc_name" placeholder="请输入工艺名称"></Input>
         </Form-item>
         </Col>
-        <Col span="11" offset="2">
+        <Col span="11" offset="13">
         <Form-item>
-          <Button v-show="formItem.cur_detail!=''" type="error" @click="deleteItem">删除</Button>
-          <Button v-show="formItem.cur_detail!=''" type="success" @click="handleSubmit(1)">在 {{curDetailItem.name}} 后插入</Button>
-          <Button v-show="formItem.detail_name!=''" type="primary" @click="handleSubmit(0)">添加</Button>
+          <Button v-show="formItem.cur_proc!=''" type="error" @click="deleteItem">删除</Button>
+          <Button v-show="formItem.cur_proc!=''" type="success" @click="handleSubmit(1)">在 {{curDetailItem.name}} 后插入</Button>
+          <Button v-show="formItem.proc_name!=''" type="primary" @click="handleSubmit(0)">添加</Button>
         </Form-item>
         </Col>
       </Row>
@@ -55,23 +62,24 @@ export default {
       prodTypes: [],
       processList: [],
       detailList: [],
+      procList: [],
       formItem: {
         cur_type: "",
         detail_name: "",
         cur_process: "",
         cur_detail: "",
-        spec_num: 0
+        spec_num: 0,
+        cur_proc: "",
+        proc_name: ""
       }
     };
   },
   computed: {
     curDetailItem() {
-      if (this.formItem.cur_detail == "") {
+      if (this.formItem.cur_proc == "") {
         return "";
       }
-      return this.detailList.find(
-        item => item.value == this.formItem.cur_detail
-      );
+      return this.procList.find(item => item.value == this.formItem.cur_proc);
     }
   },
   watch: {
@@ -80,9 +88,34 @@ export default {
         return;
       }
       this.loadProcessDetail(val);
+    },
+    "formItem.cur_detail"(val) {
+      this.procList = [];
+      this.formItem.cur_proc = "";
+      if (val == "") {
+        return;
+      }
+      this.loadProcList(val);
     }
   },
   methods: {
+    loadProcList: async function(process_detail_id = this.formItem.cur_detail) {
+      if (process_detail_id == "") {
+        return;
+      }
+
+      let url = `${setting.url}20&M=0&processid=${
+        this.formItem.cur_process
+      }&processdetailid=${process_detail_id}`;
+      this.procList = await this.$http.get(url).then(res => {
+        return res.data.rows == 0
+          ? []
+          : res.data.data.map(item => {
+              item.order_index = parseInt(item.order_index);
+              return item;
+            });
+      });
+    },
     loadProcessDetail: async function(process_id = this.formItem.cur_process) {
       if (process_id == "") {
         return;
@@ -108,18 +141,22 @@ export default {
     handleSubmit: async function(setCurOrderIndex) {
       let params = {
         tbl: 0,
-        tblname: "set_process_detail_short",
-        utf2gbk: ["process_detail_name"],
-        process_detail_name: this.formItem.detail_name,
-        process_id: this.formItem.cur_process
+        tblname: "set_proc_short",
+        utf2gbk: ["proc_name"],
+        proc_name: this.formItem.proc_name,
+        process_id: this.formItem.cur_process,
+        process_detail_id: this.formItem.cur_detail
       };
 
       // 如果没有数据
-      if (this.detailList.length == 0) {
+      if (this.procList.length == 0) {
         params.order_index = 0;
+        params.proc_id = 0;
       } else {
         params.order_index =
-          this.detailList[this.detailList.length - 1].order_index + 1;
+          parseInt(this.procList[this.procList.length - 1].order_index) + 1;
+        params.proc_id =
+          parseInt(this.procList[this.procList.length - 1].value) + 1;
       }
       // 在XX后插入数据
       if (setCurOrderIndex) {
@@ -139,7 +176,6 @@ export default {
     handleReset() {
       this.formItem.detail_name = "";
       this.formItem.cur_detail = "";
-      this.formItem.spec_num = 0;
     },
     deleteItem: async function() {
       let params = {

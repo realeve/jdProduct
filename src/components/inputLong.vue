@@ -169,11 +169,12 @@ export default {
       if (process_id === "") {
         return;
       }
-      let url = `${setting.url}15&M=0&prodid=${this.formItem
-        .prod_id}&processid=${process_id}`;
+      let url = `${setting.url}15&M=0&prodid=${
+        this.formItem.prod_id
+      }&processid=${process_id}`;
       this.processDetailList = await this.$http
         .get(url)
-        .then(res => res.data.data);
+        .then(res => (res.data.rows ? res.data.data : []));
     },
     handleReset(name) {
       this.$refs[name].resetFields();
