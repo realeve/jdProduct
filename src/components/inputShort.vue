@@ -48,7 +48,7 @@
           <p for="">当期产量(规格X数量)：
             <span class="red-text">{{curMount}}</span>
           </p>
-          <p for="">历史产量(规格X数量)：
+          <p for="">订单计划产量(规格X数量)：
             <span class="red-text">{{order_num}}</span>
           </p>
           <p v-show="curMount>order_num" class="red-text">当前输入产量大于订单总量，请注意。</p>

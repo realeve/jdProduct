@@ -153,7 +153,7 @@ export default {
       let params = {
         tbl: 0,
         tblname: "set_process_detail_short",
-        id: this.formItem.cur_detail
+        id: this.curDetailItem.id
       };
 
       let url = setting.api.delete;
