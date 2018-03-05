@@ -46,6 +46,9 @@
         <Form-item label="半成品付出" prop="outcome_semi_manu">
           <Input v-model="formItem.outcome_semi_manu"></Input>
         </Form-item>
+        <Form-item label="返工数量" prop="outcome_back_num">
+          <Input v-model="formItem.outcome_back_num"></Input>
+        </Form-item>
         <Form-item>
           <Button type="primary" @click="handleSubmit('formItem')">提交</Button>
           <Button type="ghost" style="margin-left: 8px" @click="handleReset('formItem')">重置</Button>
@@ -87,7 +90,8 @@ export default {
         outcome_waste_product: "",
         outcome_white_paper: "",
         outcome_sample: "",
-        outcome_semi_manu: ""
+        outcome_semi_manu: "",
+        outcome_back_num: ""
       },
       ruleValidate: {
         prod_id: [

@@ -38,6 +38,9 @@
         <Form-item label="投纸数（全张）" prop="order_paper_num">
           <Input v-model="formItem.order_paper_num" placeholder="请输入订单全张投纸数"></Input>
         </Form-item>
+        <Form-item label="备注信息" prop="remark">
+          <Input v-model="formItem.remark" placeholder="请输入本订单备注信息"></Input>
+        </Form-item>
         <Form-item>
           <Button type="primary" @click="handleSubmit('formItem')">提交</Button>
           <Button type="ghost" style="margin-left: 8px" @click="handleReset('formItem')">重置</Button>
@@ -78,7 +81,8 @@ export default {
         prod_unit_id: "",
         prod_type_id: "",
         prod_spec: "",
-        order_paper_num: ""
+        order_paper_num: "",
+        remark: ""
       },
       ruleValidate: {
         prod_unit_id: [

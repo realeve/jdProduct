@@ -25,14 +25,13 @@
         </Form-item>
         <Form-item label="产品名称">
           <label for="">{{prod_name}}</label>
-          <!-- <Input v-model="prod_name" disabled></Input> -->
+        </Form-item>
+        <Form-item label="订单备注">
+          <label for="" :class="{'red-text':cur_mark!='无'}">{{cur_mark}}</label>
         </Form-item>
         <!--Form-item v-if="showTimes" label="次数" prop="times">
           <Input v-model="formItem.times" :placeholder="placeholder">{{formItem.placeholder}}</Input>
         </Form-item-->
-        <Form-item label="备注" prop="remark">
-          <Input placeholder="请输入备注信息" v-model="formItem.remark"></Input>
-        </Form-item>
         </Col>
 
         <Col span="11" offset="2">
@@ -46,17 +45,52 @@
         </Form-item>
         <Form-item label="数量" prop="prod_num">
           <Input v-model="formItem.prod_num" placeholder="请输入生产数量"></Input>
+          <p for="">当期产量(规格X数量)：
+            <span class="red-text">{{curMount}}</span>
+          </p>
+          <p for="">历史产量(规格X数量)：
+            <span class="red-text">{{order_num}}</span>
+          </p>
+          <p v-show="curMount>order_num" class="red-text">当前输入产量大于订单总量，请注意。</p>
         </Form-item>
         <Form-item label="工时" prop="prod_working_hours">
           <Input v-model="formItem.prod_working_hours" placeholder="请输入工时"></Input>
+        </Form-item>
+        <Form-item label="备注" prop="remark">
+          <Input placeholder="请输入备注信息" v-model="formItem.remark"></Input>
         </Form-item>
         <Form-item>
           <Button type="primary" @click="handleSubmit('formItem')">提交</Button>
           <Button type="ghost" style="margin-left: 8px" @click="handleReset('formItem')">重置</Button>
         </Form-item>
         </Col>
-
       </Row>
+    </Card>
+    <Card dis-hover class="margin-top-20">
+      <p slot="title">公式计算器</p>
+      <Row>
+        <Col span="7">
+        <Form-item label="出厂枚数">
+          <Input v-model="formular.a"></Input>
+        </Form-item>
+        </Col>
+        <Col span="7">
+        <Form-item label=" ÷ 排版方式">
+          <Input v-model="formular.b"></Input>
+        </Form-item>
+        </Col>
+        <Col span="7">
+        <Form-item label=" × 上机尺寸（宽）">
+          <Input v-model="formular.c"></Input>
+        </Form-item>
+        </Col>
+        <Col span="3">
+        <Form-item label="= ">
+          <label for="">(出厂米数) {{formularResult}}</label>
+        </Form-item>
+        </Col>
+      </Row>
+      <p style="padding-left:20px;">说明：公式计算结果(出厂米数)为第一项除以第二项再乘以第三项，根据需要自行调整数据。相关信息请参考上方订单备注日志。</p>
     </Card>
   </Form>
 </template>
@@ -68,6 +102,10 @@
 .large-card {
   min-height: 400px;
 }
+.red-text {
+  color: rgb(221, 36, 58);
+  font-weight: bold;
+}
 </style>
 <script>
 import setting from "../config/setting";
@@ -75,9 +113,25 @@ import util from "../config/util";
 import _ from "lodash";
 
 export default {
-  computed: {},
+  computed: {
+    curMount() {
+      if (this.formItem.spec == "" || this.formItem.prod_num == "") {
+        return 0;
+      }
+      return this.formItem.spec * this.formItem.prod_num;
+    },
+    formularResult() {
+      let { a, b, c } = this.formular;
+      if (b == 0) {
+        return "排版方式不能为空值或0";
+      }
+      return (parseInt(a) * parseInt(c) / parseInt(b)).toFixed(2);
+    }
+  },
   data() {
     return {
+      order_num: 0,
+      cur_mark: "",
       processList: [],
       procList: [],
       processDetailList: [],
@@ -85,6 +139,11 @@ export default {
       placeholder: "",
       showProc: false,
       prod_name: "",
+      formular: {
+        a: "",
+        b: "",
+        c: ""
+      },
       formItem: {
         proc_id: "",
         process_id: "",
@@ -163,7 +222,14 @@ export default {
     getProdName: _.debounce(async function() {
       let url = setting.api.print_sn + this.formItem.print_sn;
       let data = await this.$http.get(url).then(res => res.data.data);
-      this.prod_name = data.length > 0 ? data[0][0] : "流水号数据载入异常";
+      this.prod_name = "流水号数据载入异常";
+      this.order_num = 0;
+      this.cur_mark = "无";
+      if (data.length) {
+        this.prod_name = data[0][0];
+        this.order_num = parseInt(data[0][1]);
+        this.cur_mark = data[0][2];
+      }
     }, 1000),
     save2local() {
       let formItem = {

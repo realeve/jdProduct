@@ -30,9 +30,20 @@
           <Input v-model="formItem.proc_name" placeholder="请输入工艺名称"></Input>
         </Form-item>
         </Col>
+        <Col span="11">
+        <Form-item v-show="formItem.cur_proc!=''">
+          <Button type="error" @click="deleteItem">删除</Button>
+          <Button type="primary" @click="updateItem">更新规格</Button>
+        </Form-item>
+        </Col>
+        <Col span="11" offset="2">
+        <Form-item v-show="formItem.cur_detail.trim()!=''" label="规格(开/本)" prop="spec">
+          <InputNumber v-model="formItem.spec_num" laceholder="请输入该项目开/本"></InputNumber>
+        </Form-item>
+        </Col>
+
         <Col span="11" offset="13">
-        <Form-item>
-          <Button v-show="formItem.cur_proc!=''" type="error" @click="deleteItem">删除</Button>
+        <Form-item v-show="formItem.spec_num>0">
           <Button v-show="formItem.cur_proc!=''" type="success" @click="handleSubmit(1)">在 {{curDetailItem.name}} 后插入</Button>
           <Button v-show="formItem.proc_name!=''" type="primary" @click="handleSubmit(0)">添加</Button>
         </Form-item>
@@ -96,6 +107,9 @@ export default {
         return;
       }
       this.loadProcList(val);
+    },
+    "formItem.cur_proc"(val) {
+      this.formItem.proc_name = "";
     }
   },
   methods: {
@@ -182,11 +196,33 @@ export default {
       this.formItem.detail_name = "";
       this.formItem.cur_detail = "";
     },
+    updateItem: async function() {
+      let params = {
+        tbl: 0,
+        tblname: "set_proc_short",
+        id: this.curDetailItem.id,
+        spec_num: this.formItem.spec_num
+      };
+      // if (this.formItem.proc_name != "") {
+      //   params.proc_name = this.formItem.proc_name;
+      //   this.utf2gbk = ["proc_name"];
+      // }
+
+      let url = setting.api.update;
+      await this.$http
+        .post(url, params, {
+          emulateJSON: true
+        })
+        .then(res => {
+          this.$Message.success("成功删除数据!");
+        });
+      this.loadProcessDetail();
+    },
     deleteItem: async function() {
       let params = {
         tbl: 0,
-        tblname: "set_process_detail_short",
-        id: this.formItem.cur_detail
+        tblname: "set_proc_short",
+        id: this.curDetailItem.id
       };
 
       let url = setting.api.delete;
