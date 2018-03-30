@@ -21,9 +21,6 @@
         <Form-item label="产品名称" prop="prod_name">
           <Input v-model="formItem.prod_name" placeholder="请输入产品名称"></Input>
         </Form-item>
-        </Col>
-
-        <Col span="11" offset="2">
         <Form-item label="订单数量" prop="order_num">
           <Input v-model="formItem.order_num" placeholder="请输入订单数量"></Input>
         </Form-item>
@@ -32,11 +29,26 @@
             <Option v-for="item in prodUnit" :value="item.value" :key="item.value">{{item.name}}</Option>
           </Select>
         </Form-item>
+        </Col>
+
+        <Col span="11" offset="2">
         <Form-item label="成品规格(K)" prop="prod_spec">
           <Input v-model="formItem.prod_spec" placeholder="请输入成品规格"></Input>
         </Form-item>
         <Form-item label="投纸数（全张）" prop="order_paper_num">
           <Input v-model="formItem.order_paper_num" placeholder="请输入订单全张投纸数"></Input>
+        </Form-item>
+        <Form-item label="纸张克重" prop="paper_weight">
+          <Input v-model="formItem.paper_weight" placeholder="请输入纸张克重"></Input>
+        </Form-item>
+        <Form-item label="纸张品种" prop="paper_prod_type">
+          <Input v-model="formItem.paper_prod_type" placeholder="请输入纸张品种"></Input>
+        </Form-item>
+        <Form-item label="色数" prop="paper_color_num">
+          <Input v-model="formItem.paper_color_num" placeholder="请输入色数"></Input>
+        </Form-item>
+        <Form-item label="版周" prop="paper_plate_length">
+          <Input v-model="formItem.paper_plate_length" placeholder="请输入版周"></Input>
         </Form-item>
         <Form-item label="备注信息" prop="remark">
           <Input v-model="formItem.remark" placeholder="请输入本订单备注信息"></Input>
@@ -82,7 +94,11 @@ export default {
         prod_type_id: "",
         prod_spec: "",
         order_paper_num: "",
-        remark: ""
+        remark: "",
+        paper_weight: "",
+        paper_prod_type: "",
+        paper_color_num: "",
+        paper_plate_length: ""
       },
       ruleValidate: {
         prod_unit_id: [

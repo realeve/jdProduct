@@ -19,18 +19,25 @@
             <Option v-for="(item,i) in processDetailList" :value="item.value" :key="i">{{item.name}}</Option>
           </Select>
         </Form-item>
+        <Form-item label="开本" prop="k_num">
+          <Input v-model="formItem.k_num" placeholder="开本"></Input>
+        </Form-item>
         <Form-item label="昨日库存" prop="inventory">
           <Input v-model="formItem.inventory" placeholder="请输入昨日库存(无需人工录入)"></Input>
         </Form-item>
-        </Col>
 
-        <Col span="11" offset="2">
+        <Form-item label="生产日期" prop="rec_time">
+          <DatePicker type="date" placeholder="请选择生产日期" v-model="formItem.rec_time" style="width: 200px"></DatePicker>
+        </Form-item>
         <Form-item label="投纸数" prop="income">
           <Input v-model="formItem.income" placeholder="请输入投纸数"></Input>
         </Form-item>
         <Form-item label="上机数" prop="produce_num">
           <Input v-model="formItem.produce_num" placeholder="请输入上机数"></Input>
         </Form-item>
+        </Col>
+
+        <Col span="11" offset="2">
         <Form-item label="工时" prop="produce_hours">
           <Input v-model="formItem.produce_hours" placeholder="请输入生产工时"></Input>
         </Form-item>
@@ -48,6 +55,9 @@
         </Form-item>
         <Form-item label="返工数量" prop="outcome_back_num">
           <Input v-model="formItem.outcome_back_num"></Input>
+        </Form-item>
+        <Form-item label="备注" prop="remark">
+          <Input placeholder="请输入备注信息" v-model="formItem.remark"></Input>
         </Form-item>
         <Form-item>
           <Button type="primary" @click="handleSubmit('formItem')">提交</Button>
@@ -71,6 +81,8 @@
 <script>
 import prodTypeList from "../assets/data/long.json";
 import setting from "../config/setting";
+import util from "../config/util";
+import moment from "moment";
 
 export default {
   computed: {},
@@ -79,6 +91,7 @@ export default {
       prodTypeList: [],
       procList: [],
       processDetailList: [],
+      specList: [],
       formItem: {
         prod_id: "",
         process_id: "",
@@ -91,7 +104,9 @@ export default {
         outcome_white_paper: "",
         outcome_sample: "",
         outcome_semi_manu: "",
-        outcome_back_num: ""
+        outcome_back_num: "",
+        remark: "",
+        rec_time: ""
       },
       ruleValidate: {
         prod_id: [
@@ -121,6 +136,10 @@ export default {
     },
     "formItem.process_id"(val) {
       this.loadProcessDetail(val);
+    },
+    "formItem.process_detail_id"(val) {
+      let processInfo = this.specList.find(item => item.value == val);
+      this.formItem.k_num = processInfo.k_num;
     }
   },
   methods: {
@@ -136,9 +155,12 @@ export default {
     submitData: async function() {
       let params = {
         tbl: 0,
-        tblname: "record_long"
+        tblname: "record_long",
+        utf2gbk: ["remark"]
       };
       params = Object.assign(params, this.formItem);
+
+      params.rec_time = moment(params.rec_time).format("YYYY-MM-DD");
 
       let url = setting.api.insert;
       await this.$http
@@ -176,9 +198,13 @@ export default {
       let url = `${setting.url}15&M=0&prodid=${
         this.formItem.prod_id
       }&processid=${process_id}`;
-      this.processDetailList = await this.$http
+      this.specList = await this.$http
         .get(url)
         .then(res => (res.data.rows ? res.data.data : []));
+      this.processDetailList = this.specList.map(item => {
+        item.name = item.name + `( ${item.k_num} 开)`;
+        return item;
+      });
     },
     handleReset(name) {
       this.$refs[name].resetFields();

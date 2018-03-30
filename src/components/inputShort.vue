@@ -23,11 +23,20 @@
         <Form-item label="流水号" prop="print_sn">
           <Input v-model="formItem.print_sn" placeholder="请输入印刷部流水号(数据保留)"></Input>
         </Form-item>
-        <Form-item label="产品名称">
+        <!-- <Form-item label="产品名称">
           <label for="">{{prod_name}}</label>
+        </Form-item> -->
+        <Form-item label="产品名称">
+          <Select v-model="formItem.base_short_id" placeholder="请选择产品名称">
+            <Option v-for="(item,i) in prodNameList" :value="item.id" :key="i">{{item.prod_name}}</Option>
+          </Select>
         </Form-item>
         <Form-item label="订单备注">
           <label for="" :class="{'red-text':cur_mark!='无'}">{{cur_mark}}</label>
+        </Form-item>
+
+        <Form-item label="生产日期" prop="rec_time">
+          <DatePicker type="date" placeholder="请选择生产日期" v-model="formItem.rec_time" style="width: 200px"></DatePicker>
         </Form-item>
         <!--Form-item v-if="showTimes" label="次数" prop="times">
           <Input v-model="formItem.times" :placeholder="placeholder">{{formItem.placeholder}}</Input>
@@ -55,6 +64,9 @@
         </Form-item>
         <Form-item label="工时" prop="prod_working_hours">
           <Input v-model="formItem.prod_working_hours" placeholder="请输入工时"></Input>
+        </Form-item>
+        <Form-item label="返工数量" prop="prod_reback_num">
+          <Input v-model="formItem.prod_reback_num" placeholder="请输入返工数量"></Input>
         </Form-item>
         <Form-item label="备注" prop="remark">
           <Input placeholder="请输入备注信息" v-model="formItem.remark"></Input>
@@ -111,6 +123,7 @@
 import setting from "../config/setting";
 import util from "../config/util";
 import _ from "lodash";
+import moment from "moment";
 
 export default {
   computed: {
@@ -135,10 +148,11 @@ export default {
       processList: [],
       procList: [],
       processDetailList: [],
+      prodNameList: [],
       showTimes: false,
       placeholder: "",
       showProc: false,
-      prod_name: "",
+      // prod_name: "",
       formular: {
         a: "",
         b: "",
@@ -155,7 +169,10 @@ export default {
         machine: "",
         captain: "",
         remark: "",
-        print_sn: ""
+        print_sn: "",
+        base_short_id: "",
+        prod_reback_num: "",
+        rec_time: moment().format("YYYY-MM-DD")
       },
       ruleValidate: {
         print_sn: [
@@ -208,6 +225,16 @@ export default {
         return;
       }
       this.getProdName();
+    },
+    "formItem.base_short_id"(val) {
+      let data = this.prodNameList.filter(item => item.id == val);
+      if (0 === data.length) {
+        this.order_num = 0;
+        this.cur_mark = "无";
+        return;
+      }
+      this.order_num = data[0].total_num;
+      this.cur_mark = data[0].remark;
     }
   },
   methods: {
@@ -221,15 +248,7 @@ export default {
     },
     getProdName: _.debounce(async function() {
       let url = setting.api.print_sn + this.formItem.print_sn;
-      let data = await this.$http.get(url).then(res => res.data.data);
-      this.prod_name = "流水号数据载入异常";
-      this.order_num = 0;
-      this.cur_mark = "无";
-      if (data.length) {
-        this.prod_name = data[0][0];
-        this.order_num = parseInt(data[0][1]);
-        this.cur_mark = data[0][2];
-      }
+      this.prodNameList = await this.$http.get(url).then(res => res.data.data);
     }, 1000),
     save2local() {
       let formItem = {
@@ -262,7 +281,7 @@ export default {
       let params = {
         tbl: 0,
         tblname: "record_short",
-        rec_time: util.getNow(),
+        // rec_time: util.getNow(),
         utf2gbk: ["machine", "captain", "remark"]
       };
       return Object.assign(params, this.formItem);
@@ -280,6 +299,7 @@ export default {
       }
       this.save2local();
       let params = this.getParams();
+      params.rec_time = moment(params.rec_time).format("YYYY-MM-DD");
       // if (!this.showTimes) {
       //   delete params.times;
       // }
@@ -302,7 +322,7 @@ export default {
     },
     handleReset(name) {
       this.$refs[name].resetFields();
-      this.prod_name = "";
+      this.formItem.base_short_id = "";
     },
     loadProcess: async function() {
       let url = setting.url;
